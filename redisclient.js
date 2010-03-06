@@ -56,7 +56,12 @@ Client.prototype.connect = function (callback) {
   }
   if (this.conn.readyState === "open" && typeof(callback) === 'function') {
     callback();
-  } else {
+  }
+  else if (this.conn.readyState === "opening" && typeof(callback) === 'function')
+  {
+    this.conn.addListener("connect", callback);
+  }
+  else {
     var self = this;
 
     this.conn.addListener("connect", function () {
